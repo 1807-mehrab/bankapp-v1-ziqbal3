@@ -7,5 +7,7 @@ public interface BankingMethods {
     public static void removeAccount(){};
     public static void withdraw(Person bankRecord){};
     public static void deposit(Person bankRecord){};
-    //public static remove(){};
+    public static void remove(){};
+    public static void changeAccount(){};
+    public static void showAll(){};
 }

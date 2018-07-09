@@ -39,11 +39,18 @@ public class Main implements BankingMethods{
                     menu();
                 } else if (input.equals("q")) {
                     System.out.println("Thank you for choosing Bank Inc");
-                    System.exit(1);
-                } /*else if (input.equals("c")) {
+                    break;
+                } else if (input.equals("c")) {
                     changeAccount();
                     menu();
-                } */
+                } else if (input.equals("r")){
+                    removeAccount();
+                    menu();
+                } else if(input.equals("s")) {
+                    showAll();
+                    menu();
+                }
+
                 else {
                     System.out.println("Incorrect input. Please try again");
                     menu();
@@ -54,12 +61,13 @@ public class Main implements BankingMethods{
      public static void menu() {
         System.out.println("Please choose an option from the menu: ");
         System.out.println("Please type 'a' if you would like to add a new account");
-        System.out.println("Please type 'r' if you would like to remove your current account");
+        System.out.println("Please type 'r' if you would like to remove an account");
         System.out.println("Please type 'w' if you would like to make a withdrawal");
         System.out.println("Please type 'd' if you would like to make a deposit");
-        System.out.println("Please type 'm' if you would like to see the menu");
-        System.out.println("Please type 'q' if you would like to make a deposit");
         System.out.println("Please type 'c' if you would like to change your account");
+        System.out.println("Please type 's' if you would like to show all your accounts");
+        System.out.println("Please type 'm' if you would like to see the menu");
+        System.out.println("Please type 'q' if you would like to quit");
     }
 
     public static void newAccount() {
@@ -77,42 +85,78 @@ public class Main implements BankingMethods{
     }
 
     public static void withdraw(Person bankRecord) {
-        int newBalance;
-        System.out.println("How much money would you like to withdraw?");
-        int withrawalAmount = scanner.nextInt();
+        if(!accounts.isEmpty()) {
+            int newBalance;
+            System.out.println("How much money would you like to withdraw?");
+            int withrawalAmount = scanner.nextInt();
 
-        if(withrawalAmount > bankRecord.getAccountBalance()) {
-            System.out.println("You do not have enough money to withdraw");
-        } else if(withrawalAmount < bankRecord.getAccountBalance()) {
-            newBalance = bankRecord.getAccountBalance() - withrawalAmount;
-            bankRecord.setAccountBalance(newBalance);
-            System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
-        } else if(withrawalAmount == bankRecord.getAccountBalance()) {
-            newBalance = bankRecord.getAccountBalance() - withrawalAmount;
-            bankRecord.setAccountBalance(newBalance);
-            System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
+            if (withrawalAmount > bankRecord.getAccountBalance()) {
+                System.out.println("You do not have enough money to withdraw");
+            } else if (withrawalAmount < bankRecord.getAccountBalance()) {
+                newBalance = bankRecord.getAccountBalance() - withrawalAmount;
+                bankRecord.setAccountBalance(newBalance);
+                System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
+            } else if (withrawalAmount == bankRecord.getAccountBalance()) {
+                newBalance = bankRecord.getAccountBalance() - withrawalAmount;
+                bankRecord.setAccountBalance(newBalance);
+                System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
+            }
+        } else {
+            System.out.println("No accounts available. Please create account.");
         }
 
     }
 
     public static void deposit(Person bankRecord) {
-        int newBalance;
-        System.out.println("How much money would you like to deposit?");
-        int depositAmount = scanner.nextInt();
+        if(!accounts.isEmpty()) {
+            int newBalance;
+            System.out.println("How much money would you like to deposit?");
+            int depositAmount = scanner.nextInt();
 
-        newBalance = depositAmount + bankRecord.getAccountBalance();
-        bankRecord.setAccountBalance(newBalance);
-        System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
-
+            newBalance = depositAmount + bankRecord.getAccountBalance();
+            bankRecord.setAccountBalance(newBalance);
+            System.out.println("Your new balance is $" + bankRecord.getAccountBalance());
+        } else {
+            System.out.println("No accounts available. Please create account.");
+        }
     }
-/*
+
     public static void changeAccount() {
-        currentRecord = accounts.get(0);
-        System.out.println("Your current account is " + currentRecord.toString());
-        bankRecord.setFirstName(currentRecord.getFirstName());
-        bankRecord.setLastName(currentRecord.getLastName());
+        if(!accounts.isEmpty()) {
+            showAll();
+            System.out.println("Please enter the index of the account that you would like to change to: Example[ index 1, index 2,...]");
+            int index = scanner.nextInt();
+            currentRecord = accounts.get(index - 1);
+            //currentRecord = accounts.get(0);
+            System.out.println("Your current account is " + currentRecord.toString());
+            bankRecord = currentRecord;
+        } else {
+            System.out.println("No accounts available. Please create account.");
+        }
 
     }
-*/
+    //will remove account of user desired index
+    public static void removeAccount() {
+        if(!accounts.isEmpty()) {
+            showAll();
+            System.out.println("Please enter the index of the account that you would like to remove: Example[ index 1, index 2,...]");
+            int index = scanner.nextInt();
+            accounts.remove(index - 1);
+        } else {
+            System.out.println("No accounts available. Please create account.");
+        }
+    }
+
+    public static void showAll() {
+        if(!accounts.isEmpty()) {
+            for(int i = 0; i < accounts.size(); i++) {
+                System.out.println("Account " + (i + 1) +": " + accounts.get(i) + " ");
+            }
+        }
+        else {
+            System.out.println("No accounts available. Please create account.");;
+        }
+    }
+
 
 }
